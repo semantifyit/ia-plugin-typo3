@@ -1,4 +1,5 @@
 <?php
+
 namespace STI\IaPluginTypo3\Controller;
 
 use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -11,8 +12,8 @@ use \TYPO3\CMS\Core\Utility\DebugUtility;
 class InstantAnnotationsController extends ActionController
 {
     /*
-       protected $defaultViewObjectName = \TYPO3\CMS\Backend\View\BackendTemplateView::class;
 
+       protected $defaultViewObjectName = \TYPO3\CMS\Backend\View\BackendTemplateView::class;
 
 
        protected function initializeView(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view)
@@ -28,32 +29,24 @@ class InstantAnnotationsController extends ActionController
            $pageRenderer->loadRequireJsModule('TYPO3/CMS/IaPluginTypo3/iasemantify-admin');
            $pageRenderer->loadRequireJsModule('TYPO3/CMS/IaPluginTypo3/iasemantify-login');
            $pageRenderer->loadRequireJsModule('TYPO3/CMS/IaPluginTypo3/instantAnnotations');
-           $pageRenderer->loadRequireJsModule('TYPO3/CMS/IaPluginTypo3/iasemantify-main', 'function(){
-            var IA_injection_is_checked = false;
-           var IA_semantify_url_route_js = "";
-
-           var websiteUID = "Hkqtxgmkz";
-           var websiteSecret = "ef0a64008d0490fc4764c2431ca4797b";
-
-           iasi_saveWebsiteUID = "Hkqtxgmkz";
-           iasi_saveWebsiteSecret = "ef0a64008d0490fc4764c2431ca4797b";
-
-           startIA();
-           }');
+           //$pageRenderer->loadRequireJsModule('TYPO3/CMS/IaPluginTypo3/iasemantify-main', '');
 
            $view->assign('contentObjectData', $this->configurationManager->getContentObject()->data);
            parent::initializeView($view);
 
 
-    }
+}
+*/
 
-  */
     /**
      * action main
+     *
      * @return void
      */
     public function mainAction()
     {
+
+
         /*
         $pages = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             '*',         // SELECT ...
@@ -71,19 +64,51 @@ class InstantAnnotationsController extends ActionController
             array_push($page_names, $elem[inject_file_name]);
         }
         */
-        $this->view->assign('websiteUID', "Hkqtxgmkz");
-        $this->view->assign('websiteSecret', "ef0a64008d0490fc4764c2431ca4797b");
+
+        $id = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        $this->view->assign('pageId', $id);
+
+        $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ia_plugin_typo3']);
+
+        $websiteApiKey = $confArray['ia.']['WebsiteApiKey'];
+        $websiteApiSecret = $confArray['ia.']['WebsiteApiSecret'];
+
+        $this->view->assign('websiteApiKey', $websiteApiKey);
+        $this->view->assign('websiteApiSecret', $websiteApiSecret);
+        $this->view->render();
     }
 
     /**
      * action frontend
+     *
      * @return void
      */
-    public function frontendAction() {
+    public function frontendAction()
+    {
         // TODO: delete this action, if not needed
+
 
         // $GLOBALS['TSFE'] could be accessed here
         $this->view->render();
     }
 
+
+    /**
+     * Renders the table as pagination occurs
+     *
+     * @param array                                   $params  Array of parameters from the AJAX interface, currently unused
+     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @return void
+     */
+    public function ajaxHandlerAction($params = array())
+    {
+
+
+        //$limit = GeneralUtility::_GP('action');
+
+        $result = "nice";
+        echo "Yes, finaly you reached the controller!";
+        //$ajaxObj->addContent('success', $result); // In JS 'success' is the final result passed from here
+        //$ajaxObj->setContentFormat('json');       // Writing back as JSON array
+    }
 }
