@@ -1,76 +1,76 @@
 
+$('#ia_warning_message_box').slideUp();
+if (IA_injection_is_checked === 'true') {
+    var button = '<button id="IA_view_inserted_annotations" type="button" class="btn btn-sm btn-danger">View annotations <div id=IA_loading_url></div></button>'
+    $('#ia_injection_box').append('<div class="alert alert-warning" role="alert">Additionally to the annotaitons you added manually, you enabled the "auto-annotation-lookup" feature that might add more annotations to your website!<br>' + button + '</div>');
+    $('#IA_view_inserted_annotations').click(function () {
+        $('#IA_loading_url').html('<img style="max-height:20px" src="https://semantify.it/images/loading.gif">');
+        $.get(IA_semantify_url_route_js, function (data) {}).done(function (data) {
+            $('#IA_loading_url').html('');
+            var dummy = document.createElement("div");
+            document.body.appendChild(dummy);
+            dummy.setAttribute("id", "preview_id");
+            $('#preview_id').append(
+                '<div class="bootstrap semantify">' +
+                '<div class="modal fade" id="previewModal" role="dialog">' +
+                '<div class="modal-dialog">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
+                '<h4 class="modal-title">Preview JSON-LD</h4>' +
+                '</div>' +
+                '<div class="modal-body">' +
+                '<pre id="preview_textArea" style="max-height: 500px;"></pre>' +
+                '<button class="btn btn-default" id="IA_simple_preview_copy" style="float: right; position:relative;bottom:55px; right:5px "> <i class="material-icons">content_copy</i> Copy</button>' +
+                '</div>' +
+                '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+            );
+            $('#preview_textArea').html(syntaxHighlight(JSON.stringify(data, null, 2)));
+            $('#previewModal')
+                .modal()
+                .on('hidden.bs.modal', function () {
+                    $(this).remove();
+                });
+            $('#IA_simple_preview_copy').click(function () {
+                copyStr(JSON.stringify(data, null, 2));
+            });
 
-
-function startIA() {
-
-
-    $('#ia_warning_message_box').slideUp();
-    if (IA_injection_is_checked === 'true') {
-        var button = '<button id="IA_view_inserted_annotations" type="button" class="btn btn-sm btn-danger">View annotations <div id=IA_loading_url></div></button>'
-        $('#ia_injection_box').append('<div class="alert alert-warning" role="alert">Additionally to the annotaitons you added manually, you enabled the "auto-annotation-lookup" feature that might add more annotations to your website!<br>' + button + '</div>');
-        $('#IA_view_inserted_annotations').click(function () {
-            $('#IA_loading_url').html('<img style="max-height:20px" src="https://semantify.it/images/loading.gif">');
-
-            $.get(IA_semantify_url_route_js, function (data) {
+        })
+            .fail(function (err) {
+                $('#IA_loading_url').html('');
+                if (err.statusText == "Not Found") {
+                    send_snackbarMSG_fail("No annotations found for this url ");
+                } else {
+                    send_snackbarMSG_fail("Oops, an error occurred.");
+                }
             })
-                .done(function (data) {
-                    $('#IA_loading_url').html('');
-                    var dummy = document.createElement("div");
-                    document.body.appendChild(dummy);
-                    dummy.setAttribute("id", "preview_id");
-                    $('#preview_id').append(
-                        '<div class="bootstrap semantify">' +
-                        '<div class="modal fade" id="previewModal" role="dialog">' +
-                        '<div class="modal-dialog">' +
-                        '<div class="modal-content">' +
-                        '<div class="modal-header">' +
-                        '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-                        '<h4 class="modal-title">Preview JSON-LD</h4>' +
-                        '</div>' +
-                        '<div class="modal-body">' +
-                        '<pre id="preview_textArea" style="max-height: 500px;"></pre>' +
-                        '<button class="btn btn-default" id="IA_simple_preview_copy" style="float: right; position:relative;bottom:55px; right:5px "> <i class="material-icons">content_copy</i> Copy</button>' +
-                        '</div>' +
-                        '<div class="modal-footer">' +
-                        '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>'
-                    );
-                    $('#preview_textArea').html(syntaxHighlight(JSON.stringify(data, null, 2)));
-                    $('#previewModal')
-                        .modal()
-                        .on('hidden.bs.modal', function () {
-                            $(this).remove();
-                        });
-                    $('#IA_simple_preview_copy').click(function () {
-                        copyStr(JSON.stringify(data, null, 2));
-                    });
+    });
+}
 
-                })
-                .fail(function (err) {
-                    $('#IA_loading_url').html('');
-                    if (err.statusText == "Not Found") {
-                        send_snackbarMSG_fail("No annotations found for this url ");
-                    } else {
-                        send_snackbarMSG_fail("Oops, an error occurred.");
-                    }
-                })
-        });
-    }
-
-
-
-
-
+function onChangeSelect(element) {
+    $('#addPane').prop("disabled", false);
+    $('#addPane').prop("title", "Add a new annotation box");
+}
 
 var IA_dashboard_annotation_store = null;
 var IA_currently_added_annotations = [];
 
+// add select options
+function SortByName(a, b) {
+    var aName = a.name.replace('Simple', '').toLowerCase();
+    var bName = b.name.replace('Simple', '').toLowerCase();
+    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+}
 
-//console.log(websiteUID);
+// var websiteUID = "{websiteApiKey}";
+// var websiteSecret = "{websiteApiSecret}";
+console.log(websiteUID);
 
 httpGet(semantifyUrl + "/api/domainSpecification/instantAnnotation", function (ds) {
     if (!ds) {
@@ -105,8 +105,10 @@ httpGet(semantifyUrl + "/api/domainSpecification/instantAnnotation", function (d
             personalDSHtml += '<option disabled style="font-style: italic">no private templates</option>';
             $('#select_type').prepend(personalDSHtml);
             $('#select_type').prop("selectedIndex", 0);
+            checkCustomPostType();
         });
     } else {
+        checkCustomPostType();
     }
 
 });
@@ -116,36 +118,36 @@ var iasemantify_panelCount = 0;
 getClassesJson();
 getPropertiesJson();
 
-
+//iasi_saveWebsiteUID = "{websiteApiKey}";
+//iasi_saveWebsiteSecret = "{websiteApiSecret}";
 
 //var existingAnnotationsString = <?php echo json_encode( get_post_meta( get_the_ID(), $this->plugin_name . "_ann_id", true ) );?>;
-var existingAnnotationsString = "{}";
+var existingAnnotationsString = "";
+
 var existingAnnotationsArray = existingAnnotationsString.split(',');    //shift because string starts with ','
 existingAnnotationsArray.shift();
 
-existingAnnotationsArray.forEach(function (idStr) {
-    var splits = idStr.split(';');
-    var ann_id = splits[0];
-    var ds_id = splits[1];
-    var web_id = splits[2];
-    var web_secret = splits[3];
-    ia_addNewBox(ann_id, ds_id, web_id, web_secret);
-});
-
-}
-
 //console.log(existingAnnotationsString);
 
-// add select options
-function SortByName(a, b) {
-    var aName = a.name.replace('Simple', '').toLowerCase();
-    var bName = b.name.replace('Simple', '').toLowerCase();
-    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-}
+function checkCustomPostType() {
+    var postType;
+    postType = "post";
+    if (postType !== "post" && postType !== "page") {
+        console.log('Found custom post type: ' + postType);
+        var options = $('#select_type')[0].options;
+        for (var i = 0; i < options.length; i++) {
+            if (!options[i].disabled && !options[i].hidden) {
+                if (options[i].innerText.toLowerCase().indexOf(postType) !== -1) {
+                    $('#select_type')[0].options[i].selected = true;
+                    $('#addPane')[0].disabled = false;
+                    break;
+                }
 
-function onChangeSelect(element) {
-    $('#addPane').prop("disabled", false);
-    $('#addPane').prop("title", "Add a new annotation box");
+            }
+            ;
+        }
+        ;
+    }
 }
 
 function ia_addNewBox(ann_id, ds_id, web_id, web_secret) {
@@ -166,6 +168,15 @@ function ia_addNewBox(ann_id, ds_id, web_id, web_secret) {
         });
     }
 }
+
+existingAnnotationsArray.forEach(function (idStr) {
+    var splits = idStr.split(';');
+    var ann_id = splits[0];
+    var ds_id = splits[1];
+    var web_id = splits[2];
+    var web_secret = splits[3];
+    ia_addNewBox(ann_id, ds_id, web_id, web_secret);
+});
 
 $("#addPane").click(function () {
     var id = $("#select_type").val();
@@ -306,6 +317,7 @@ $("#ia_menu_help").click(function (e) {
                     nonce: nonce
                 },
                 success: function () {
+                    console.log("ajax",result);
                     IA_delete_id_whitelist = [];
                     IA_currently_added_annotations = [];
                     existingAnnUidArr = [];
@@ -517,7 +529,8 @@ $("#ia_menu_add_ann").click(function (e) {
                             web_id: websiteUID,
                             web_secret: websiteSecret
                         },
-                        success: function () {
+                        success: function (result) {
+                            console.log("ajax",result);
                             //$('#loading_pushining_ann').html("");
                             send_snackbarMSG("Successfully Added Annotations");
                             savedWebsites.forEach(function (ann) {

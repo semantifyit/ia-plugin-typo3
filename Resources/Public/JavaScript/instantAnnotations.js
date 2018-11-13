@@ -93,6 +93,10 @@ var wordPressSaveBtn = {
                         type: "post",
                         url: myAjax.ajaxurl,
                         data: {
+                            "tx_iaplugintypo3[action]": "iasemantify_push_ann",
+                        },
+                        /*
+                        data: {
                             action: "iasemantify_push_ann",
                             post_id: post_id,
                             nonce: nonce,
@@ -101,7 +105,9 @@ var wordPressSaveBtn = {
                             web_id: iasemantify_saveWebsiteUID,
                             web_secret: iasemantify_saveWebsiteSecret,
                         },
+                        */
                         success: function (res) {
+                            console.log("ajax",res);
                         },
                         error: function (err) {
                             send_snackbarMSG_fail("An error occurred while saving to wordpress")
@@ -156,6 +162,7 @@ var wordPressDeleteBtn = {
                     web_secret: annWebSecret,
                 },
                 success: function (res) {
+                    console.log("ajax",res);
                 },
                 error: function (err) {
                     send_snackbarMSG_fail("An error occurred while deleting from wordpress")
@@ -333,7 +340,7 @@ var saveBtn = {
                     );
                 }
                 else {
-                     iasemantify_addWebsites();
+                    iasemantify_addWebsites();
                 }
 
                 var loginOnEnter = function (event) {
@@ -369,7 +376,7 @@ var saveBtn = {
                             if (loginResp) {
                                 $('#IA_loginSection').slideUp(100);
                                 semantifyToken = loginResp["token"];
-                                 iasemantify_addWebsites();
+                                iasemantify_addWebsites();
                             }
                             else {
                                 snackBarOptions["content"] = "Couldn't log in to semantify.it";
@@ -1045,10 +1052,10 @@ function semantifyCreateJsonLd(id) {
             //console.log(notFilledRequired);
             notFilledRequired.forEach(function(f){
                 f.addClass('input-highlight');
-                    setTimeout(
-                        function() { f.removeClass('input-highlight'); },
-                        3000
-                    );
+                setTimeout(
+                    function() { f.removeClass('input-highlight'); },
+                    3000
+                );
             });
             send_snackbarMSG_fail("Please fill in all required fields", 3000);
         } else {
