@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2016-06-18T12:03:24Z"
+              product-name="ia_plugin_typo3" target-language="de">
+        <header/>
+        <body>
+            <trans-unit id="pages.palette_title">
+                <source>semantify.it settings</source>
+                <target>semantify.it Einstellungen</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationID">
+                <source>Choose your annotations from the list</source>
+                <target>Wählen Sie eine Annotations aus der Liste aus</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationNew_ID">
+                <source>UID of the annotation which was created for this page</source>
+                <target>Annotation UID die Webseite gemacht habe</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationNew_SemantifyID">
+                <source>Internal Semantify id of the annotation which was created for this page</source>
+                <target>Internal Semantify id die Webseite gemacht habe</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationList">
+                 <source>Choose your annotation</source>
+                 <target>Wählen Sie eine Annotation aus</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationListNone">
+                 <source>None annotation</source>
+                 <target>Keine Annotation</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationListNew">
+                  <source>Make or edit an annotation</source>
+                  <target>Mach oder änder eine neue Annotation</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationNew_StepOne">
+                  <source>Choose the new annotation type</source>
+                  <target>Wählen Sie die neue Annotation Typ aus</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationNew_StepOneChoose">
+                  <source>Choose type</source>
+                  <target>Wählen Sie die Typ aus</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationNew_StepTwo">
+                  <source>What is this annotation about?</source>
+                  <target>Was ist diese Annotation über?</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationNew_StepTwoChoose">
+                  <source>Choose subtype</source>
+                  <target>Wählen Sie die Subtyp aus</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationNew_Name">
+                  <source>Name</source>
+                  <target>Name</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationNew_NameChoose">
+                  <source>Plase add a name</source>
+                  <target>Bitte fügen Sie eine Name hinzu.</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationNew_URL">
+                  <source>URL</source>
+                  <target>URL</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_annotationNew_URLChoose">
+                  <source>Plase add a URL</source>
+                  <target>Bitte fügen Sie eine URL hinzu.</target>
+            </trans-unit>
+            <trans-unit id="configuration.description">
+                  <source>Website API key: Please input your Website API key to start using semantify.it on your webpage. If you don't have a API key please visit https://www.semantify.it</source>
+                  <target>Website API key: Bitte fügen sie die Website API schlüssel hinzu.</target>
+            </trans-unit>
+            <trans-unit id="configuration.secret">
+                  <source>Website Secret key: Please input your Website Secret key.</source>
+                  <target>Website Secret key: Bitte fügen sie die Website Secret schlüssel hinzu.</target>
+            </trans-unit>
+            <trans-unit id="configuration.annotationByURL">
+                  <source>Automatic Annotation search by URL: Please check this checkbox if you want to have dynamic search for your annotation on semantify.it by the url</source>
+                  <target>Automatic Annotation suchen: Wählen sie diese möglichkeit wann wollen sie eine automatik annotation suchen by URL haben.</target>
+            </trans-unit>
+            <trans-unit id="mlang_tabs_tab">
+                  <source>semantify.it</source>
+                  <target>semantify.it</target>
+            </trans-unit>
+            <trans-unit id="mlang_labels_tabdescr">
+                <source>Deploy your annotations to your website</source>
+                <target>Deploy your annotations to your website</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_NoAPI">
+                <source>Please add Semantify API and Secret key</source>
+                <target>Please add Semantify API and Secret key</target>
+            </trans-unit>
+            <trans-unit id="pages.semantify_it_NoSecret">
+                <source>For creating new annotations please add Semantify Secret key</source>
+                <target>For creating new annotations please add Semantify Secret key</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

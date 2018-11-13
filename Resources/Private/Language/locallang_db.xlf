@@ -6,6 +6,12 @@
 			<trans-unit id="test">
 				<source>test</source>
 			</trans-unit>
+			<trans-unit id="configuration.description">
+                              <source>Website API key: Please input your Website API key to start using semantify.it on your webpage. If you don't have a API key please visit https://www.semantify.it</source>
+            </trans-unit>
+            <trans-unit id="configuration.secret">
+                  <source>Website Secret key: Please input your Website Secret key.</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>
