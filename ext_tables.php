@@ -20,7 +20,7 @@ if (TYPO3_MODE === 'BE') {
 		'InstantAnnotations',	// Submodule key
 		'',						// Position
 		array(
-			'InstantAnnotations' => 'main, uploadFile, saveForm, listPages, deleteEntry',
+			'InstantAnnotations' => 'main, uploadFile, saveForm, listPages, deleteEntry, ajaxHandler',
 		),
 		array(
 			'access' => 'user,group',
@@ -29,4 +29,8 @@ if (TYPO3_MODE === 'BE') {
 		)
 	);
 
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
+        'InstantAnnotations::ajaxHandlerAction',
+        'STI\\IaPluginTypo3\\Controller\\InstantAnnotations->ajaxHandlerAction'
+    );
 }
