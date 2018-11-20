@@ -3,6 +3,7 @@
 namespace STI\IaPluginTypo3\Controller;
 
 use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Utility\DebugUtility;
 
 
@@ -11,6 +12,10 @@ use \TYPO3\CMS\Core\Utility\DebugUtility;
  */
 class InstantAnnotationsController extends ActionController
 {
+
+    protected $sqlFROM = 'pages';
+    protected $sqlSELECT = 'iasemantify_ann_id';
+
     /*
 
        protected $defaultViewObjectName = \TYPO3\CMS\Backend\View\BackendTemplateView::class;
@@ -73,8 +78,11 @@ class InstantAnnotationsController extends ActionController
         $websiteApiKey = $confArray['ia.']['WebsiteApiKey'];
         $websiteApiSecret = $confArray['ia.']['WebsiteApiSecret'];
 
+        $savedAnnotations = $this->get_post_meta($id);
+
         $this->view->assign('websiteApiKey', $websiteApiKey);
         $this->view->assign('websiteApiSecret', $websiteApiSecret);
+        $this->view->assign('savedAnnotations', $savedAnnotations);
         $this->view->render();
     }
 
@@ -102,13 +110,170 @@ class InstantAnnotationsController extends ActionController
      */
     public function ajaxHandlerAction($params = array())
     {
+        $action = GeneralUtility::_GP('action');
+        $ds_hash = GeneralUtility::_GP('ds_hash');
+        $id = (int)GeneralUtility::_GP('id');
 
 
+        switch($action){
+            case "iasemantify_push_ann":
+               $out[] = $this->iasemantify_push_ann();
+            break;
+
+            case "iasemantify_multi_push_ann":
+                $out[] = $this->iasemantify_multi_push_ann();
+                break;
+
+
+            case "iasemantify_delete_ann":
+                $out[] = $this->iasemantify_delete_ann();
+                break;
+        }
+
+
+
+        $arguments = $this->request->getArguments();
+
+        //$ajaxObj = $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'];
         //$limit = GeneralUtility::_GP('action');
 
-        $result = "nice";
-        echo "Yes, finaly you reached the controller!";
-        //$ajaxObj->addContent('success', $result); // In JS 'success' is the final result passed from here
+        //$result = "nice";
+        //var_dump($_POST);
+        //echo "Yes, finaly you reached the controller!";
+        //$ajaxObj->addContent('action'); // In JS 'success' is the final result passed from here
+
         //$ajaxObj->setContentFormat('json');       // Writing back as JSON array
+
+        $out[] = $_POST;
+
+        // Process your POSt data here
+
+        header('Content-Type: application/json');
+        return json_encode($out);
     }
+
+
+
+
+
+    /**
+     * trying to simulate wordpress get post meta in typo3
+     */
+     private function get_post_meta($pageId){
+
+         $aditional = "";
+
+         if ($GLOBALS['TSFE']->sys_language_uid != 0) {
+            $this->sqlFROM = "pages_language_overlay";
+            $aditional = ' AND sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid;
+        }
+
+         $dbEntries = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+             $this->sqlSELECT,
+             $this->sqlFROM,
+             'uid = ' . $pageId . $aditional
+         );
+
+
+         if (!isset($dbEntries) || $GLOBALS['TYPO3_DB']->sql_num_rows($dbEntries) == 0) {
+             return false;
+         } else {
+
+             //get annotations from the database
+             foreach ($dbEntries as $res) {
+                 $result = $res[$this->sqlSELECT];
+                 break;
+             }
+
+             return $result;
+         }
+    }
+
+
+    private function update_post_meta($pageId, $updateArray){
+
+        $aditional = "";
+
+        if ($GLOBALS['TSFE']->sys_language_uid != 0) {
+            $this->sqlFROM = "pages_language_overlay";
+            $aditional = ' AND sys_language_uid = ' . $GLOBALS['TSFE']->sys_language_uid;
+        }
+
+        $GLOBALS['TYPO3_DB']->exec_UPDATEquery (
+            $this->sqlFROM,
+            'uid = ' . $pageId . $aditional,
+            $updateArray,
+            false);
+
+    }
+
+
+
+
+     private function iasemantify_push_ann(){
+
+            $id = (int)GeneralUtility::_GP('id');
+
+            $previousAnnotations = $this->get_post_meta($id);
+
+            $newAnnotations = $previousAnnotations . "," . GeneralUtility::_GP("ann_id") . ';' . GeneralUtility::_GP("ds_hash") . ';' . GeneralUtility::_GP("web_id") . ';' . GeneralUtility::_GP("web_secret");
+
+            $this->update_post_meta($id, array($this->sqlSELECT => $newAnnotations));
+
+            return $newAnnotations;
+
+    }
+
+    private function iasemantify_multi_push_ann(){
+
+        $id = (int)GeneralUtility::_GP('id');
+
+        $previousAnnotations = $this->get_post_meta($id);
+
+        $ann_ids = explode(",", GeneralUtility::_GP("ann_ids"));
+        $ds_hashes = explode(",", GeneralUtility::_GP("ds_hashes"));
+
+
+        $newAnnotations = $previousAnnotations;
+
+        for ($i = 0; $i < count($ann_ids); $i++) {
+            $newAnnotations = $newAnnotations . "," . $ann_ids[$i] . ';' . $ds_hashes[$i] . ';' . GeneralUtility::_GP("web_id") . ';' . GeneralUtility::_GP("web_secret");
+        }
+
+        $this->update_post_meta($id, array($this->sqlSELECT => $newAnnotations));
+
+        return $newAnnotations;
+
+    }
+
+    private function iasemantify_delete_ann(){
+
+        $id = (int)GeneralUtility::_GP('id');
+
+        $previousAnnotations = $this->get_post_meta($id);
+
+        $newAnnotations = str_replace("," . GeneralUtility::_GP("ann_id") . ';' . GeneralUtility::_GP("ds_hash") . ';' . GeneralUtility::_GP("web_id") . ';' . GeneralUtility::_GP("web_secret"), "", $previousAnnotations);
+
+        $this->update_post_meta($id, array($this->sqlSELECT => $newAnnotations));
+
+        return $newAnnotations;
+
+    }
+
+
+    private function iasemantify_reset_ann(){
+
+        $id = (int)GeneralUtility::_GP('id');
+
+        $newAnnotations = "";
+
+        $this->update_post_meta($id, array($this->sqlSELECT => $newAnnotations));
+
+        return $newAnnotations;
+
+    }
+
+
+
 }
+
