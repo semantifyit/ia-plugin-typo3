@@ -40,6 +40,8 @@
     var iasi_saveWebsiteUID = "{websiteApiKey}";
     var iasi_saveWebsiteSecret = "{websiteApiSecret}";
 
+    var existingAnnotationsString = "{savedAnnotations}";
+
     var myAjax = {};
      myAjax.ajaxurl = '<f:uri.action action="ajaxHandler" controller="InstantAnnotations" />';
      myAjax.ajaxurl = myAjax.ajaxurl.replace(/&amp;/g, '&');
@@ -86,10 +88,11 @@
             <br/><p>To start, please choose a page from the list on the left side.</p>
         </f:if>
         <f:if condition="{pageId} != 0">
-            <pre>DEBUG:
+            <pre style="display: none;">DEBUG:
                 page id: {pageId}
                 api key from settings: {websiteApiKey}
                 secret key from settings: {websiteApiSecret}
+                annotations: {savedAnnotations}
             </pre>
 
             <div>
