@@ -92,10 +92,7 @@ var wordPressSaveBtn = {
                     $.ajax({
                         type: "post",
                         url: myAjax.ajaxurl,
-                        data: {
-                            "tx_iaplugintypo3[action]": "iasemantify_push_ann",
-                        },
-                        /*
+
                         data: {
                             action: "iasemantify_push_ann",
                             post_id: post_id,
@@ -105,7 +102,7 @@ var wordPressSaveBtn = {
                             web_id: iasemantify_saveWebsiteUID,
                             web_secret: iasemantify_saveWebsiteSecret,
                         },
-                        */
+
                         success: function (res) {
                             console.log("ajax",res);
                         },

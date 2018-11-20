@@ -122,7 +122,7 @@ getPropertiesJson();
 //iasi_saveWebsiteSecret = "{websiteApiSecret}";
 
 //var existingAnnotationsString = <?php echo json_encode( get_post_meta( get_the_ID(), $this->plugin_name . "_ann_id", true ) );?>;
-var existingAnnotationsString = "";
+
 
 var existingAnnotationsArray = existingAnnotationsString.split(',');    //shift because string starts with ','
 existingAnnotationsArray.shift();
