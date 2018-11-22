@@ -27,7 +27,6 @@
 <script src="{f:uri.resource(path: 'JavaScript/iasemantify-login.js')}"></script>
 
 
-
 <script type="text/javascript">
 
     var IA_injection_is_checked = {annotationByURL};
@@ -43,9 +42,9 @@
     var existingAnnotationsString = "{savedAnnotations}";
 
     var myAjax = {};
-     myAjax.ajaxurl = '<f:uri.action action="ajaxHandler" controller="InstantAnnotations" />';
-     myAjax.ajaxurl = myAjax.ajaxurl.replace(/&amp;/g, '&');
-     console.log("ajax",myAjax.ajaxurl);
+    myAjax.ajaxurl = '<f:uri.action action="ajaxHandler" controller="InstantAnnotations" />';
+    myAjax.ajaxurl = myAjax.ajaxurl.replace(/&amp;/g, '&');
+    console.log("ajax", myAjax.ajaxurl);
 
 </script>
 
@@ -55,61 +54,66 @@
     <div class="bootstrap semantify" id="ia_global_bootstrap_div">
         <h3>Instant Annotations</h3>
         <f:if condition="{websiteApiKey} == ''">
-            <br/><p>Please add Website api key in plugin settings!</p>
+            <br/>
+            <p>Please add Website api key in plugin settings!</p>
         </f:if>
         <f:if condition="{websiteApiSecret} == ''">
-            <br/><p>Please add Website api secret  in plugin settings!</p>
+            <br/>
+            <p>Please add Website api secret in plugin settings!</p>
         </f:if>
 
-        <f:if condition="{pageId} == 0">
-            <br/><p>To start, please choose a page from the list on the left side.</p>
-        </f:if>
-        <f:if condition="{pageId} != 0 && {websiteApiSecret} != ''">
+        <f:if condition="{websiteApiSecret} != ''">
+            <f:if condition="{pageId} == 0">
+                <br/>
+                <p>To start, please choose a page from the list on the left side.</p>
+            </f:if>
+            <f:if condition="{pageId} != 0 ">
             <pre style="display: none;">DEBUG:
                 page id: {pageId}
                 api key from settings: {websiteApiKey}
                 secret key from settings: {websiteApiSecret}
                 annotations: {savedAnnotations}
             </pre>
-            <br/>
-            <div>
-                <div id="ia_warning_message_box" hidden>
-                    <div class="alert alert-danger" role="alert">
-                        <h4 id="ia_warning_msg"></h4>
-                    </div>
-                </div>
-                <div id="ia_injection_box"></div>
-                <select title="choose a type" onchange="onChangeSelect(this);" name="box_select" id="select_type"
-                        style="background-color: white !important; min-width:150px "></select>
-                <button style="margin-left:10px;padding:5px 20px" title="Please select a type first!"
-                        class="btn btn-sm button-sti-red" id="addPane" disabled="true" type="button"><i
-                        class="material-icons">note_add</i>
-                </button>
-                <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-sm button-sti-red pull-right dropdown-toggle"
-                            data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        <i class="material-icons">menu</i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" id="ia_menu_report">Report</a></li>
-                        <li><a href="#" id="ia_menu_help">Help</a></li>
-                    </ul>
-                </div>
-                <button style="margin-right:10px;padding:5px 20px" title="Import from your semantify account"
-                        class="btn btn-sm button-sti-red pull-right" id="ia_menu_add_ann" type="button"><i
-                        class="material-icons"
-                        style="transform: rotate(90deg);">exit_to_app</i>
-                </button>
                 <br/>
-                <hr>
-                <div class="container-fluid">
-                    <div class="inside" id="inside">
-                        <div class="row" id="row">
+                <div>
+                    <div id="ia_warning_message_box" hidden>
+                        <div class="alert alert-danger" role="alert">
+                            <h4 id="ia_warning_msg"></h4>
+                        </div>
+                    </div>
+                    <div id="ia_injection_box"></div>
+                    <select title="choose a type" onchange="onChangeSelect(this);" name="box_select" id="select_type"
+                            style="background-color: white !important; min-width:150px "></select>
+                    <button style="margin-left:10px;padding:5px 20px" title="Please select a type first!"
+                            class="btn btn-sm button-sti-red" id="addPane" disabled="true" type="button"><i
+                            class="material-icons">note_add</i>
+                    </button>
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-sm button-sti-red pull-right dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">menu</i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" id="ia_menu_report">Report</a></li>
+                            <li><a href="#" id="ia_menu_help">Help</a></li>
+                        </ul>
+                    </div>
+                    <button style="margin-right:10px;padding:5px 20px" title="Import from your semantify account"
+                            class="btn btn-sm button-sti-red pull-right" id="ia_menu_add_ann" type="button"><i
+                            class="material-icons"
+                            style="transform: rotate(90deg);">exit_to_app</i>
+                    </button>
+                    <br/>
+                    <hr>
+                    <div class="container-fluid">
+                        <div class="inside" id="inside">
+                            <div class="row" id="row">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </f:if>
         </f:if>
     </div>
 
