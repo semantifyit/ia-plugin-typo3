@@ -3,7 +3,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
     'title' => 'Instant Annotations',
-    'description' => 'Deploy your annotations from semantify.it to your typo3 website.',
+    'description' => 'Create and Deploy your annotations from semantify.it to your typo3 website.',
     'category' => 'plugin',
     'author' => 'semantify.it',
     'author_company' => 'semantify.it',
@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = array(
     'uploadfolder' => '0',
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
-    'version' => '0.1.8',
+    'version' => '1.0.1',
     'constraints' => array(
         'depends' => array(
             'typo3' => '6.2.0-9.5.99',
