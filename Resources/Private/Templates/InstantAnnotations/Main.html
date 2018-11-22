@@ -30,8 +30,8 @@
 
 <script type="text/javascript">
 
-    var IA_injection_is_checked = false;
-    var IA_semantify_url_route_js = "";
+    var IA_injection_is_checked = {annotationByURL};
+    var IA_semantify_url_route_js = "{resultPath}";
 
 
     var websiteUID = "{websiteApiKey}";
@@ -50,51 +50,28 @@
 </script>
 
 
-<style>
-    .check {
-        margin-top: -20px;
-    }
-
-    span.check[disabled] {
-        color: grey;
-        background-color: grey;
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .inputBorder {
-        border-radius: 40px;
-    }
-
-    .disabled_span {
-        color: grey;
-        background-color: grey;
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .semantify .snackbar-content{
-        color:white !important;
-    }
-</style>
-
 <div class="module-body t3js-module-body" style="margin:40px;">
-
-
 
     <div class="bootstrap semantify" id="ia_global_bootstrap_div">
         <h3>Instant Annotations</h3>
+        <f:if condition="{websiteApiKey} == ''">
+            <br/><p>Please add Website api key in plugin settings!</p>
+        </f:if>
+        <f:if condition="{websiteApiSecret} == ''">
+            <br/><p>Please add Website api secret  in plugin settings!</p>
+        </f:if>
+
         <f:if condition="{pageId} == 0">
             <br/><p>To start, please choose a page from the list on the left side.</p>
         </f:if>
-        <f:if condition="{pageId} != 0">
+        <f:if condition="{pageId} != 0 && {websiteApiSecret} != ''">
             <pre style="display: none;">DEBUG:
                 page id: {pageId}
                 api key from settings: {websiteApiKey}
                 secret key from settings: {websiteApiSecret}
                 annotations: {savedAnnotations}
             </pre>
-
+            <br/>
             <div>
                 <div id="ia_warning_message_box" hidden>
                     <div class="alert alert-danger" role="alert">
