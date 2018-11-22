@@ -35,7 +35,7 @@ class PagePathApi
         $siteUrl = self::getSiteUrl($pageId);
 
         if ($siteUrl) {
-            $url = $siteUrl . 'index.php?eID=semantify_it&data=' . base64_encode(json_encode($data));
+            $url = $siteUrl . 'index.php?eID=ia_plugin_typo3&data=' . base64_encode(json_encode($data));
             // Send TYPO3 cookies as this may affect path generation
             //var_dump($_COOKIE);
             $headers = array(

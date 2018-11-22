@@ -1,5 +1,6 @@
 <?php
 
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -83,14 +84,11 @@ class tx_pagepath_resolver
     }
 
 }
-//echo GeneralUtility::getIndpEnv('REMOTE_ADDR')." != ". $_SERVER['REMOTE_ADDR'];
 
-if (GeneralUtility::getIndpEnv('REMOTE_ADDR') != $_SERVER['REMOTE_ADDR']) {
-
+if (GeneralUtility::getIndpEnv('REMOTE_ADDR') != $_SERVER['SERVER_ADDR']) {
     header('HTTP/1.0 403 Access denied');
     // Empty output!!!
 } else {
-
     $resolver = GeneralUtility::makeInstance(tx_pagepath_resolver::class);
     $resolver->main();
 }
