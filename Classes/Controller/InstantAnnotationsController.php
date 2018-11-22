@@ -5,6 +5,7 @@ namespace STI\IaPluginTypo3\Controller;
 use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Utility\DebugUtility;
+use \Dmitry\PagePath\PagePathApi;
 
 
 /**
@@ -75,14 +76,27 @@ class InstantAnnotationsController extends ActionController
 
         $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ia_plugin_typo3']);
 
-        $websiteApiKey = $confArray['ia.']['WebsiteApiKey'];
-        $websiteApiSecret = $confArray['ia.']['WebsiteApiSecret'];
+        $websiteApiKey = $confArray['smtf.']['WebsiteApiKey'];
+        $websiteApiSecret = $confArray['smtf.']['WebsiteApiSecret'];
+        $annotationByURL = $confArray['smtf.']['annotationByURL'];
 
         $savedAnnotations = $this->get_post_meta($id);
+
+
+        $url = \Dmitry\PagePath\PagePathApi::getPagePath($id);
+
+        $current_encoded_url    = str_replace( '/', '%2F', $url );
+        $path                   = 'https://semantify.it/api/annotation/url/';
+        $resultPath             = $path . $current_encoded_url;
+
+
 
         $this->view->assign('websiteApiKey', $websiteApiKey);
         $this->view->assign('websiteApiSecret', $websiteApiSecret);
         $this->view->assign('savedAnnotations', $savedAnnotations);
+        $this->view->assign('annotationByURL', $annotationByURL);
+        $this->view->assign('resultPath', $resultPath);
+
         $this->view->render();
     }
 
@@ -128,9 +142,25 @@ class InstantAnnotationsController extends ActionController
             case "iasemantify_delete_ann":
                 $out[] = $this->iasemantify_delete_ann();
                 break;
+
+            case "iasemantify_refresh_cache":
+                //nice automatic refresh
+                $out[] = "cache refreshed!";
+                break;
         }
 
+        //GeneralUtility::makeInstance( \TYPO3\CMS\Core\Cache\CacheManager::class)->flushCachesInGroupByTags('pages', [ 'pageId_'.$id ]);
+        GeneralUtility::makeInstance( \TYPO3\CMS\Core\Cache\CacheManager::class)->flushCachesInGroupByTags('pages', [ 'pageId_'.$id ]);
 
+        $Cache = GeneralUtility::makeInstance("TYPO3\\CMS\\Core\\Cache\\CacheManager");
+        if($Cache->hasCache("pages_language_overlay")){
+            $Cache->flushCachesInGroupByTags('pages_language_overlay', [ 'pageId_'.$id ]);
+
+        }
+
+        //GeneralUtility::makeInstance( \TYPO3\CMS\Core\Cache\CacheManager::class)->flushCachesInGroupByTags('pages_language_overlay', [ 'pageId_'.$id ]);
+
+        //$out[] = "alalala";
 
         $arguments = $this->request->getArguments();
 
@@ -144,7 +174,7 @@ class InstantAnnotationsController extends ActionController
 
         //$ajaxObj->setContentFormat('json');       // Writing back as JSON array
 
-        $out[] = $_POST;
+        //$out[] = $_POST;
 
         // Process your POSt data here
 
@@ -206,6 +236,8 @@ class InstantAnnotationsController extends ActionController
             false);
 
     }
+
+
 
 
 
