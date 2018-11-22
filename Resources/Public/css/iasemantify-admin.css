@@ -6,3 +6,43 @@
 .semantify.bootstrap .snackbar-content td{
     color:white;
 }
+
+.check {
+    margin-top: -20px;
+}
+
+span.check[disabled] {
+    color: grey;
+    background-color: grey;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.inputBorder {
+    border-radius: 40px;
+}
+
+.disabled_span {
+    color: grey;
+    background-color: grey;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.semantify .snackbar-content{
+    color:white !important;
+}
+
+.semantify .alert.alert-warning{
+    background-color: #B0191E;
+}
+
+.semantify .button-sti-white {
+    color: #b0191e !important;
+    background-color: white !important;
+}
+
+html, body {
+    overflow: auto;
+    height: 100%;
+}
