@@ -55,7 +55,6 @@ class tx_annotation_input
         }
 
 
-
         //check entries
         if (!isset($dbEntries) || $GLOBALS['TYPO3_DB']->sql_num_rows($dbEntries) == 0) {
             return;
@@ -71,19 +70,24 @@ class tx_annotation_input
                 break;
             }
 
-            /*
             //option for automatic annotaiton search
-            $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['semantify_it']);
+            $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ia_plugin_typo3']);
             $annotationByURL = $confArray['smtf.']['annotationByURL'];
 
-            //if it is field not empty or with 0
-            if (!(($anno_id == "0") || ($anno_id == ""))) {
-                $annotation = $Semantify->getAnnotation($anno_id);
-            } else if($annotationByURL==1) {
+            //option for automatic annotaiton search insertion
+            if($annotationByURL==1) {
                 $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
                 $annotation = $Semantify->getAnnotationByURL($url);
+
+                if (($annotation != "0")
+                    && ($annotation !== false)
+                    && ($annotation != "")
+                    && ($annotation != '{"message":"Entry not found"}')) {
+                    $this->addAnnotation($params['pObj']->content, $annotation);
+                }
             }
-            */
+            //jisSBXhDf
+            //e72160320929c30602a07a19deffb025
 
             if (!(($anno_ids == "0") || ($anno_ids == ""))) {
 
@@ -104,8 +108,6 @@ class tx_annotation_input
                 }
 
             }
-
-
 
 
         }
@@ -146,3 +148,4 @@ class tx_annotation_input
         }
     }
 }
+
