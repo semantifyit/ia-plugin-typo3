@@ -9,6 +9,10 @@
 			<trans-unit id="mlang_labels_tabdescr">
 				<source>Add annotations to you pages</source>
 			</trans-unit>
+			<trans-unit id="configuration.annotationByURL">
+                              <source>Automatic Annotation search by URL: Please check this checkbox if you want to have dynamic search for your annotation on semantify.it by the url</source>
+                              <target>Automatic Annotation suchen: Wählen sie diese möglichkeit wann wollen sie eine automatik annotation suchen by URL haben.</target>
+                        </trans-unit>
 		</body>
 	</file>
 </xliff>
