@@ -38,8 +38,8 @@ class SemantifyItWrapper extends SemantifyIt
 
         $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ia_plugin_typo3']);
 
-        $websiteApiKey = $confArray['ia.']['WebsiteApiKey'];
-        $websiteApiSecret = $confArray['ia.']['WebsiteApiSecret'];
+        $websiteApiKey = $confArray['smtf.']['WebsiteApiKey'];
+        $websiteApiSecret = $confArray['smtf.']['WebsiteApiSecret'];
 
         $this->setWebsiteApiKey($websiteApiKey);
         $this->setWebsiteApiSecret($websiteApiSecret);
