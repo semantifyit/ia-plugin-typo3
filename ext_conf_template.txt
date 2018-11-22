@@ -1,7 +1,8 @@
 # cat=configuration; type=string; lenght=7; label=LLL:EXT:ia_plugin_typo3/Resources/Private/Language/locallang_db.xlf:configuration.description
-ia.WebsiteApiKey =
+smtf.WebsiteApiKey =
 # cat=configuration; type=string; lenght=32; label=LLL:EXT:ia_plugin_typo3/Resources/Private/Language/locallang_db.xlf:configuration.secret
-ia.WebsiteApiSecret =
-
+smtf.WebsiteApiSecret =
+# cat=configuration; type=boolean; label=LLL:EXT:ia_plugin_typo3/Resources/Private/Language/locallang_db.xlf:configuration.annotationByURL
+smtf.annotationByURL = 0
 
 image = EXT:ext_icon.png
