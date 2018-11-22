@@ -1,8 +1,8 @@
 
 $('#ia_warning_message_box').slideUp();
-if (IA_injection_is_checked === 'true') {
-    var button = '<button id="IA_view_inserted_annotations" type="button" class="btn btn-sm btn-danger">View annotations <div id=IA_loading_url></div></button>'
-    $('#ia_injection_box').append('<div class="alert alert-warning" role="alert">Additionally to the annotaitons you added manually, you enabled the "auto-annotation-lookup" feature that might add more annotations to your website!<br>' + button + '</div>');
+if (IA_injection_is_checked === 1) {
+    var button = '<button id="IA_view_inserted_annotations" type="button" class="btn btn-sm button-sti-white">View annotations <div id=IA_loading_url></div></button>'
+    $('#ia_injection_box').append('<div class="alert alert-warning panel panel-info " role="alert">Additionally to the annotaitons you added manually, you enabled the "auto-annotation-lookup" feature that might add more annotations to your website!<br>' + button + '</div>');
     $('#IA_view_inserted_annotations').click(function () {
         $('#IA_loading_url').html('<img style="max-height:20px" src="https://semantify.it/images/loading.gif">');
         $.get(IA_semantify_url_route_js, function (data) {}).done(function (data) {
