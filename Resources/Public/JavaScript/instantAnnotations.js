@@ -64,7 +64,25 @@ var wordPressSaveBtn = {
 
             httpPatchJson(semantifyUrl + "/api/annotation/uid"+ "/" + annUID, header, { "content": res.jsonLd }, function (patchRes) {
                 if (patchRes && patchRes.statusText!=="Not Found" && patchRes.statusText!=="Forbidden") {
-                    send_snackbarMSG("Successfully updated Annotation");
+
+                    $.ajax({
+                        type: "post",
+                        url: myAjax.ajaxurl,
+
+                        data: {
+                            action: "iasemantify_refresh_cache",
+                        },
+
+                        success: function (res) {
+                            send_snackbarMSG("Successfully updated Annotation");
+                        },
+                        error: function (err) {
+                            send_snackbarMSG_fail("An error occurred while saving to typo3")
+                        }
+                    });
+
+
+
                 }
                 else {
                     send_snackbarMSG_fail("An error occurred. Please check your semantify api-key!")
@@ -107,7 +125,7 @@ var wordPressSaveBtn = {
                             console.log("ajax",res);
                         },
                         error: function (err) {
-                            send_snackbarMSG_fail("An error occurred while saving to wordpress")
+                            send_snackbarMSG_fail("An error occurred while saving to typo3")
                         }
                     });
                 } else {
