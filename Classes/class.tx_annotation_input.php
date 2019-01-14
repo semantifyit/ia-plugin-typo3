@@ -100,7 +100,7 @@ class tx_annotation_input
                         $annotation = $Semantify->getAnnotation($annId);
                         //if it is field not empty or with 0
                         if (($annotation != "0") && ($annotation !== false) && ($annotation != "")) {
-                            $this->addAnnotation($params['pObj']->content, $annotation);
+                            $this->addAnnotation($params['pObj']->content, $annotation, $annId);
                         }
 
                     } catch (Exception $e) {
@@ -119,13 +119,13 @@ class tx_annotation_input
      * @param $content      string the actual html content rendered
      * @param $codeToInject string to inject
      */
-    private function addAnnotation(&$content, $annotation)
+    private function addAnnotation(&$content, $annotation, $id)
     {
         if (strlen($annotation) == 0) {
             return;
         }
 
-        $semantify_text = '<!-- Great, right? Created by the instant annotator of semantify.it -->
+        $semantify_text = '<!-- Great, right? Created by the instant annotator of semantify.it ('.$id.') -->
             ';
 
 
@@ -134,9 +134,9 @@ class tx_annotation_input
                                $content);
     }
 
-    private function iasemantify_printJson($json, $current_url)
+    private function iasemantify_printJson($json, $current_url, $id)
     {
-        $out = '<!-- Created by the instant annotator of semantify.it -->';
+        $out = '<!-- Created by the instant annotator of semantify.it ('.$id.') -->';
         $out .= '<script type="application/ld+json">';
         $out .= $json;
         $out .= '</script>';
